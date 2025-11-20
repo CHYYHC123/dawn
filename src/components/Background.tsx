@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import DefaultBg from '@/assets/default-bg.jpg';
-// import LoadingGif from '@/assets/img/loading.gif';
 import OverlayPng from '@/assets/overlay-bg.png';
 
 interface BackgroundProps {
   bg: string;
   loading: boolean;
 }
-export default function Background({ bg, loading }: BackgroundProps) {
+export default function Background({ bg }: BackgroundProps) {
   const [loaded, setLoaded] = useState(false);
 
   return (
