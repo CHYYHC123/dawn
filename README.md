@@ -33,3 +33,8 @@ npm run build
 
 ## Show
 ![扩展的主要功能视图](screenShot/image.png)
+
+## 一个脚本
+```js
+
+```

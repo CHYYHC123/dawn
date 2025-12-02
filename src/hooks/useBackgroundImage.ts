@@ -9,17 +9,8 @@ type Candidate = { type: 'bing'; url: string } | { type: 'url'; url: string } | 
 import LOCAL_FALLBACK from '@/assets/default-bg.jpg';
 import LOCAL_FALLBACK2 from '@/assets/default-bg2.jpg';
 
-const MOMENTUM_IMAGE = [
-  'https://momentum.photos/img/8a3e99bf-36aa-4c84-a0ce-b49e1b47d0c2.jpg?momo_cache_bg_uuid=2d0f5c24-9e80-478e-b25f-c49799e717cb',
-  'https://images.unsplash.com/photo-1435783099294-283725c37230?ixlib=rb-0.3.5&q=99&fm=jpg&crop=entropy&cs=tinysrgb&w=2048&fit=max&s=4794ac75c92bc641bdd8d1781cf2e49d?momo_cache_bg_uuid=e952fd10-1887-41da-9f98-c57e097f404a',
-  'https://momentum.photos/img/8a3e99bf-36aa-4c84-a0ce-b49e1b47d0c2.jpg',
-  'https://farm3.staticflickr.com/2888/33038677584_8f3755dd1c_k.jpg',
-  'https://images.unsplash.com/photo-1548022401-6b11ed578cc7?ixlib=rb-1.2.1&q=99&fm=jpg&crop=entropy&cs=tinysrgb&w=2048&fit=max&ixid=eyJhcHBfaWQiOjcwOTV9',
-  'https://images.unsplash.com/photo-1435783099294-283725c37230?ixlib=rb-0.3.5&q=99&fm=jpg&crop=entropy&cs=tinysrgb&w=2048&fit=max&s=4794ac75c92bc641bdd8d1781cf2e49d',
-  'https://images.unsplash.com/photo-1471922694854-ff1b63b20054?ixlib=rb-0.3.5&q=99&fm=jpg&crop=entropy&cs=tinysrgb&w=2048&fit=max&s=66634d2c2fe8175ab6c9494fde6e9470',
-  'https://momentum.photos/img/d607688d-2098-4dc0-a5f1-853b4d87dc1f.jpg',
-  'https://images.unsplash.com/photo-1528183087798-c83d848b0ecd?ixlib=rb-1.2.1&q=99&fm=jpg&crop=entropy&cs=tinysrgb&w=2048&fit=max&ixid=eyJhcHBfaWQiOjcwOTV9'
-];
+import { MOMENTUM_IMAGE } from '@/assets/js/config';
+
 const LOCAL_IMAGE = [LOCAL_FALLBACK, LOCAL_FALLBACK2];
 
 function pickRandom<T>(arr: T[]): T {

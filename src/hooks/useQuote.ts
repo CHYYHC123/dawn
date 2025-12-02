@@ -47,16 +47,14 @@ const fetchRandomQuoteData = async (): Promise<Quote> => {
 
   // 随机选择一个 API
   const randomIndex = Math.floor(Math.random() * apiSources.length);
-  console.log('randomIndex', randomIndex);
+  // console.log('randomIndex', randomIndex);
   const selectedApi = apiSources[randomIndex];
-
-  // console.log(`[useRandomQuote] 正在从 ${selectedApi.name} 获取名言...`);
 
   try {
     const response = await fetch(selectedApi.url);
 
     if (!response.ok) {
-      throw new Error(`API ${selectedApi.name} 返回状态码 ${response.status}`);
+      // throw new Error(`API ${selectedApi.name} 返回状态码 ${response.status}`);
     }
 
     const data = await response.json();
@@ -70,7 +68,7 @@ const fetchRandomQuoteData = async (): Promise<Quote> => {
 
     return quote;
   } catch (error) {
-    console.error(`[useRandomQuote] 获取名言失败 (${selectedApi.name}):`, error);
+    // console.info(`[useRandomQuote] 获取名言失败 (${selectedApi.name}):`, error);
     // 失败时返回默认名言
     return DEFAULT_QUOTE;
   }

@@ -51,8 +51,17 @@ export default function DawnSearch() {
             <h1 className="text-white text-9xl font-semibold drop-shadow-lg mb-4 select-none">{time}</h1>
             <p className="text-white text-6xl font-bold drop-shadow-md mb-10 select-none">{greeting}</p>
 
+            {/* <motion.div
+              variants={searchInputVariants} // 应用搜索框变体
+              className="relative w-full max-w-2xl flex items-center gap-3 rounded-full px-3 py-3 shadow-2xl backdrop-blur-md overflow-hidden"
+            >
+              <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/10 to-white/30 border border-white/30 pointer-events-none"></div>
+
+              <Input type="text" placeholder="Search" className="relative z-10 w-full bg-transparent text-white/90 placeholder-gray-400 focus:outline-none focus:ring-0 focus:ring-transparent text-xl border-none font-medium" onKeyDown={handleKeyDown} />
+            </motion.div> */}
+
             <div className="w-full max-w-2xl flex items-center gap-3 bg-white/20 rounded-full px-3 py-3 shadow-2xl border border-white/20 backdrop-blur-sm">
-              <Input type="text" placeholder="Search" className="bg-transparent text-white/90 placeholder-text-white focus:outline-none focus:ring-0 focus:ring-transparent text-xl border-none font-medium" onKeyDown={handleKeyDown} />
+              <Input type="text" placeholder="Search" className="bg-transparent text-white/90  focus:outline-none focus:ring-0 focus:ring-transparent text-xl border-none font-medium" onKeyDown={handleKeyDown} />
             </div>
           </motion.div>
         )}
