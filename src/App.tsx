@@ -1,6 +1,5 @@
-// import React, { useEffect, useState } from 'react';
 import { DndContext } from '@dnd-kit/core';
-// import Draggable from '@/components/common/Draggable';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { useBackgroundImage } from '@/hooks/useBackgroundImage';
 import Layout from '@/components/Layout';
@@ -9,29 +8,25 @@ import Footer from '@/components/Footer';
 import Background from '@/components/Background';
 import DawnSearch from '@/components/Search';
 
-// import { useInitialPosition } from '@/hooks/useInitialPosition';
-// import { useRef } from 'react';
+import useSettingStore from '@/store/useSettingStore';
 
 export default function App() {
   const { bg, loading } = useBackgroundImage();
-
-  // const taskRef = useRef<any>(null);
-  // const { initialPos, initialLoading } = useInitialPosition(taskRef);
-  // console.log('initialPos', initialPos);
+  const isShow = useSettingStore(s => s.showSky);
 
   return (
     <DndContext>
       <div className="min-h-screen bg-cover bg-center" style={{ fontFamily: 'Inter, sans-serif' }}>
-        <Layout header={<Header />} footer={<Footer />}>
-          <DawnSearch />
-
-          {/* <Draggable id="x1_tasks" initialPosition={initialPos}>
-            <div ref={taskRef as React.Ref<HTMLDivElement>}>
-              <Tasks />
-            </div>
-          </Draggable> */}
-        </Layout>
-        <Background bg={bg} loading={loading} />
+        <AnimatePresence mode="wait">
+          <motion.div key="layout" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.35, ease: 'easeOut' }}>
+            {!isShow && (
+              <Layout header={<Header />} footer={<Footer />}>
+                <DawnSearch />
+              </Layout>
+            )}
+            <Background bg={bg} loading={loading} />
+          </motion.div>
+        </AnimatePresence>
       </div>
     </DndContext>
   );
