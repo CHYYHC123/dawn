@@ -18,9 +18,15 @@ export default defineManifest({
     // },
     // default_popup: 'src/popup/index.html'
   },
-  permissions: ['storage', 'tabs', 'search'],
+  permissions: ['storage', 'tabs', 'search', 'alarms', 'notifications'],
   host_permissions: ['https://api.unsplash.com/*', 'https://freegeoip.app/*', 'https://api.quotable.io/*', 'https://v1.hitokoto.cn/*', 'https://zenquotes.io/*'],
   background: {
     service_worker: 'src/background/index.ts'
-  }
+  },
+  web_accessible_resources: [
+    {
+      resources: ['src/assets/img/favicon.png'],
+      matches: ['<all_urls>']
+    }
+  ]
 });

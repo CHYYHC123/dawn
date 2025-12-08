@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Checkbox, Menu } from '@mantine/core';
-import { Edit, Ellipsis } from 'lucide-react';
+import { Ellipsis } from 'lucide-react';
 // import { , Button, Text } from '@mantine/core';
 
 import type { TaskItem, TaskEventType } from '@/types/task';
@@ -26,10 +26,6 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, handleTask }) => {
   }, [tasks.length]); // 监听长度变化即可
 
   const [openedId, setOpenedId] = useState<string | null>(null);
-
-  const editTask = (taskId: string) => {
-    console.log('taskId', taskId);
-  };
 
   return (
     <div className="max-h-40 overflow-scroll min-h-30" ref={listRef}>
