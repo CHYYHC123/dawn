@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Checkbox, Menu } from '@mantine/core';
+import { Checkbox, Menu, Tooltip, Text } from '@mantine/core';
 import { Ellipsis } from 'lucide-react';
 // import { , Button, Text } from '@mantine/core';
 
@@ -9,7 +9,20 @@ interface CheckboxLabelProps {
   item: TaskItem;
 }
 const CheckboxLabel: React.FC<CheckboxLabelProps> = ({ item }) => {
-  return <div className={`overflow-hidden text-ellipsis whitespace-nowrap max-w-55 ${item.done ? 'line-through opacity-50' : ''}`}>{item.content}</div>;
+  return (
+    <Tooltip
+      label={
+        <Text size="xs" lh={1.4}>
+          {item.content}
+        </Text>
+      }
+      position="top-start"
+      withArrow
+      disabled={item.content.length < 20}
+    >
+      <div className={`max-w-55 overflow-hidden text-ellipsis whitespace-nowrap ${item.done ? 'line-through opacity-50' : ''}`}>{item.content}</div>
+    </Tooltip>
+  );
 };
 
 interface TaskListProps {
