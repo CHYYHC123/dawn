@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuote } from '@/hooks/useQuote';
 import Tasks from '@/components/Tasks/index';
+import ChatBot from '@/components/ChatBot/index';
 // move-MoveRight
 import { MoveRight } from 'lucide-react';
 import { Tooltip } from '@mantine/core';
@@ -37,7 +38,8 @@ const Footer: React.FC = () => {
           </Tooltip>
         </motion.div>
         <div className="text-white/95 font-medium text-base font-sans">{quote?.text}</div>
-        <div className="mb-0">
+        <div className="mb-0 flex">
+          <ChatBot />
           <Tasks />
         </div>
       </motion.div>

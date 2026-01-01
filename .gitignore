@@ -14,7 +14,7 @@ dist-ssr
 *.local
 
 blog
-screenShot
+screen_shot
 
 # Editor directories and files
 .vscode/*

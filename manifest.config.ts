@@ -19,7 +19,7 @@ export default defineManifest({
     // default_popup: 'src/popup/index.html'
   },
   permissions: ['storage', 'tabs', 'search', 'alarms', 'notifications'],
-  host_permissions: ['https://api.unsplash.com/*', 'https://freegeoip.app/*', 'https://api.quotable.io/*', 'https://v1.hitokoto.cn/*', 'https://zenquotes.io/*'],
+  host_permissions: ['https://api.unsplash.com/*', 'https://freegeoip.app/*', 'https://api.quotable.io/*', 'https://v1.hitokoto.cn/*', 'https://zenquotes.io/*','https://ai-assistant-mu-murex.vercel.app/*'],
   background: {
     service_worker: 'src/background/index.ts'
   },
