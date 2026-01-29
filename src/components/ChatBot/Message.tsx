@@ -17,7 +17,7 @@ export const Message = ({ from, avatar, className, children, ...props }: Message
   const isUser = from === 'user';
   const avatarSrc = isUser ? userImg : botImg;
   return (
-    <div className={cn('group flex w-full max-w-[80%] gap-2', isUser ? 'is-user ml-auto justify-end' : 'is-assistant justify-start', className)} {...props}>
+    <div className={cn('group flex w-full max-w-[85%] gap-2', isUser ? 'is-user ml-auto justify-end' : 'is-assistant justify-start', className)} {...props}>
       {/* assistant 头像在左 */}
       {!isUser && avatar && <Avatar src={avatarSrc} />}
 
@@ -52,11 +52,12 @@ export const MessageResponse = memo(
     return (
       <Streamdown
         className={cn(
+          'text-xs',
           'size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0',
           // 代码块保持原样，但添加水平滚动
           '[&_pre]:overflow-x-auto [&_pre]:max-w-full',
           '[&_pre]:whitespace-pre [&_pre]:rounded-md [&_pre]:bg-gray-800 [&_pre]:text-gray-100',
-          '[&_pre]:p-3 [&_pre]:text-xs [&_pre]:my-2',
+          '[&_pre]:p-3 [&_pre]:pt-0 [&_pre]:text-xs',
           // 内联代码
           '[&_code:not(pre_code)]:bg-gray-200 [&_code:not(pre_code)]:px-1.5 [&_code:not(pre_code)]:py-0.5',
           '[&_code:not(pre_code)]:rounded [&_code:not(pre_code)]:text-xs',
@@ -73,8 +74,10 @@ export const MessageResponse = memo(
           '[&_li]:my-1',
           // 引用块
           '[&_blockquote]:border-l-4 [&_blockquote]:border-gray-300 [&_blockquote]:pl-3 [&_blockquote]:my-2 [&_blockquote]:italic',
+          // 表格
+          '[&_td]:text-xs',
           // 普通文本换行
-          'wrap-break-word overflow-wrap-anywhere',
+          'wrap-break-word overflow-wrap-anywhere text-xs',
 
           className
         )}

@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import type { ComponentProps, KeyboardEventHandler, ClipboardEventHandler, ChangeEvent, HTMLAttributes, FormEvent } from 'react';
+import { useState, useRef } from 'react';
+import type { ComponentProps, KeyboardEventHandler, ClipboardEventHandler, ChangeEvent, HTMLAttributes, FormEvent, FormEventHandler } from 'react';
 import type { ChatStatus, FileUIPart } from 'ai';
 
 import InputGroupTextarea from '@/components/common/InputGroupTextarea';
 import InputGroupButton from '@/components/common/InputGroupButton';
-import { InputGroupAddon } from '@/components/common/InputGroup';
+import { InputGroupAddon, InputGroup } from '@/components/common/InputGroup';
 
 import { cn } from '@/utils/lib';
 import { CornerDownLeftIcon, ImageIcon, Loader2Icon, MicIcon, PaperclipIcon, PlusIcon, SquareIcon, XIcon } from 'lucide-react';
@@ -87,6 +87,7 @@ export type PromptInputMessage = {
   files: FileUIPart[];
 };
 
+// 最外层包裹
 export type PromptInputProps = Omit<HTMLAttributes<HTMLFormElement>, 'onSubmit' | 'onError'> & {
   accept?: string; // e.g., "image/*" or leave undefined for any
   multiple?: boolean;
@@ -98,9 +99,29 @@ export type PromptInputProps = Omit<HTMLAttributes<HTMLFormElement>, 'onSubmit' 
   maxFiles?: number;
   maxFileSize?: number; // bytes
   onError?: (err: { code: 'max_files' | 'max_file_size' | 'accept'; message: string }) => void;
-  onSubmit: (message: PromptInputMessage, event: FormEvent<HTMLFormElement>) => void | Promise<void>;
+  onSubmit: (message: PromptInputMessage, event: any) => void | Promise<void>;
 };
-export const PromptInput = ({ className, accept, multiple, globalDrop, syncHiddenInput, maxFiles, maxFileSize, onError, onSubmit, children, ...props }: PromptInputProps) => {};
+export const PromptInput = ({ className, accept, multiple, globalDrop, syncHiddenInput, maxFiles, maxFileSize, onError, onSubmit, children, ...props }: PromptInputProps) => {
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    // console.log('form', form);
+    const formData = new FormData(form);
+    const text = (formData.get('message') as string) || '';
+    // console.log('formData.get()', formData.get('message') as string);
+    const result = onSubmit({ text, files: [] }, event);
+    // console.log('result', result);
+  };
+  const inner = (
+    <>
+      <form className={cn('w-full', className)} onSubmit={handleSubmit} ref={formRef} {...props}>
+        <InputGroup className="overflow-hidden">{children}</InputGroup>
+      </form>
+    </>
+  );
+  return inner;
+};
 
 // 提交按钮
 export type PromptInputSubmitProps = ComponentProps<typeof InputGroupButton> & {
@@ -122,5 +143,6 @@ export const PromptInputSubmit = ({ className, variant = 'default', size = 'icon
   );
 };
 
+// 底部
 export type PromptInputFooterProps = Omit<ComponentProps<typeof InputGroupAddon>, 'align'>;
 export const PromptInputFooter = ({ className, ...props }: PromptInputFooterProps) => <InputGroupAddon align="block-end" className={cn('justify-between gap-1', className)} {...props} />;

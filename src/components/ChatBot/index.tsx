@@ -1,65 +1,59 @@
 import { Menu, Text, Divider } from '@mantine/core';
 import { useEffect, useState } from 'react';
+import { env } from '@/config/env';
 
-import { Conversation, ConversationContent, ConversationScrollButton } from '@/components/ChatBot/Conversation';
-
-import { Message, MessageContent, MessageResponse } from '@/components/ChatBot/Message';
-
-import botImg from '@/assets/img/bot.jpeg';
-
-import { PromptInputBody, PromptInputTextarea, PromptInputFooter, PromptInputSubmit } from './PromptInput';
+import { useChat } from '@ai-sdk/react';
 
 import { DefaultChatTransport } from 'ai';
 import type { ChatTransport, UIMessage } from 'ai';
-import { useChat } from '@ai-sdk/react';
+
+import botImg from '@/assets/img/bot.jpeg';
+
+import { Conversation, ConversationContent, ConversationScrollButton } from '@/components/ChatBot/Conversation';
+import { Message, MessageContent, MessageResponse } from '@/components/ChatBot/Message';
+
+import { PromptInput, PromptInputBody, PromptInputTextarea, PromptInputFooter, PromptInputSubmit, type PromptInputMessage } from './PromptInput';
+
+import { useArticle } from '@/components/ChatBot/hooks/useArticle';
 
 const ChatBot = () => {
   const [input, setInput] = useState('');
   // 配置请求接口
   const transport: ChatTransport<UIMessage> = new DefaultChatTransport({
-    api: 'https://ai-assistant-mu-murex.vercel.app/api/article'
+    api: `${env.AI_API_LOCAL}/api/article`
   });
-  const { messages, sendMessage, status, regenerate, setMessages } = useChat({
-    transport
+  const { messages, sendMessage, status, regenerate, setMessages, error } = useChat({
+    transport,
+    onError: err => {
+      console.log('useChat 请求错误:', err);
+    }
   });
-
-  console.log('messages', messages);
-  const handleClick = () => {
-    console.log('input', input);
-    if (!input) return;
+  const handleClick = (message: PromptInputMessage) => {
+    const hasText = Boolean(message.text);
+    const hasAttachments = Boolean(message.files?.length);
+    if (!(hasText || hasAttachments)) return;
     sendMessage({
-      text: input?.trim(),
-      files: []
+      text: message.text || 'Sent with attachments',
+      files: message.files
     });
     setInput('');
   };
 
-  // useEffect(() => {
-  //
-  //   sendMessage({
-  //     text: `hi`,
-  //     files: []
-  //   });
-  // }, []);
-  // const handleSubmit = (message: PromptInputMessage) => {
-  //   const hasText = Boolean(message.text);
-  //   const hasAttachments = Boolean(message.files?.length);
-  //   if (!(hasText || hasAttachments)) return;
+  // const { data, mutate } = useArticle();
 
-  //   sendMessage(
-  //     {
-  //       text: message.text || 'Sent with attachments',
-  //       files: message.files
-  //     },
-  //     {
-  //       body: {
-  //         model: model,
-  //         webSearch: webSearch
-  //       }
-  //     }
-  //   );
-  //   setInput('');
-  // };
+  // useEffect(() => {
+  //   // 接口需返回 { data: Article[] }，否则需改这里的字段（如 data.result / data.list）
+  //   if (!data?.data?.length) return;
+  //   const article = data.data[0];
+  //   const firstMsg = `<h2>${article.rawTitle}</h2> \n ${article.contentHtml}`;
+  //   // console.log('firstMsg', firstMsg);
+  //   const message = {
+  //     text: firstMsg,
+  //     files: []
+  //   };
+  //   handleClick(message);
+  // }, [data]);
+
   return (
     <Menu shadow="md" width={375} position="top-end" offset={10} arrowOffset={25} radius="lg" withArrow>
       <Menu.Target>
@@ -111,16 +105,18 @@ const ChatBot = () => {
 
         {/* footer */}
         <div className="p-3 pt-0">
-          <div className="bg-white border border-gray-200 rounded-2xl">
+          {/* <div className="bg-white border border-gray-200 rounded-2xl"> */}
+          <PromptInput onSubmit={handleClick}>
             <PromptInputBody className="text-xs">
               <PromptInputTextarea onChange={e => setInput(e.target.value)} value={input} />
             </PromptInputBody>
             <PromptInputFooter className="pt-0">
               <div></div>
-              <PromptInputSubmit onClick={handleClick} className="cursor-pointer bg-gray-200 rounded-2xl" disabled={!input && !status} status={status} />
+              <PromptInputSubmit className="cursor-pointer bg-gray-200 rounded-2xl" disabled={!input && !status} status={status} />
             </PromptInputFooter>
-          </div>
+          </PromptInput>
         </div>
+        {/* </div> */}
       </Menu.Dropdown>
     </Menu>
   );
