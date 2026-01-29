@@ -9,7 +9,7 @@ import { useArticle } from '@/components/ChatBot/hooks/useArticle';
  */
 export function useTodayArticle() {
   const today = useMemo(() => getTodayDateStr(), []);
-  console.log('today', today);
+  // console.log('today', today);
   const [todayArticle, setTodayArticle] = useState<Article | null>(() => getArticleByDate(today));
   // console.log('todayArticle', todayArticle);
 
@@ -31,7 +31,7 @@ export function useTodayArticle() {
     }
     if (!data?.data?.length) return;
     const articles = data.data as Article[];
-    console.log('articles',articles)
+    // console.log('articles',articles)
     setArticleBatch(today, articles);
     setTodayArticle(getArticleByDate(today));
   }, [needFetch, today, data]);
