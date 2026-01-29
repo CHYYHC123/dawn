@@ -1,5 +1,5 @@
 import { Menu, Text, Divider } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { env } from '@/config/env';
 
 import { useChat } from '@ai-sdk/react';
@@ -14,15 +14,16 @@ import { Message, MessageContent, MessageResponse } from '@/components/ChatBot/M
 
 import { PromptInput, PromptInputBody, PromptInputTextarea, PromptInputFooter, PromptInputSubmit, type PromptInputMessage } from './PromptInput';
 
-import { useArticle } from '@/components/ChatBot/hooks/useArticle';
+import { useTodayArticle } from '@/components/ChatBot/hooks/useTodayArticle';
 
 const ChatBot = () => {
   const [input, setInput] = useState('');
-  // 配置请求接口
+  const { todayArticle } = useTodayArticle();
+
   const transport: ChatTransport<UIMessage> = new DefaultChatTransport({
     api: `${env.AI_API_LOCAL}/api/article`
   });
-  const { messages, sendMessage, status, regenerate, setMessages, error } = useChat({
+  const { messages, sendMessage, status } = useChat({
     transport,
     onError: err => {
       console.log('useChat 请求错误:', err);
@@ -39,20 +40,12 @@ const ChatBot = () => {
     setInput('');
   };
 
-  // const { data, mutate } = useArticle();
-
-  // useEffect(() => {
-  //   // 接口需返回 { data: Article[] }，否则需改这里的字段（如 data.result / data.list）
-  //   if (!data?.data?.length) return;
-  //   const article = data.data[0];
-  //   const firstMsg = `<h2>${article.rawTitle}</h2> \n ${article.contentHtml}`;
-  //   // console.log('firstMsg', firstMsg);
-  //   const message = {
-  //     text: firstMsg,
-  //     files: []
-  //   };
-  //   handleClick(message);
-  // }, [data]);
+  /** 将今日面试题发送给 AI 格式化 */
+  const sendTodayArticle = () => {
+    if (!todayArticle) return;
+    const text = `<h2>${todayArticle.rawTitle}</h2>\n${todayArticle.contentHtml}`;
+    sendMessage({ text, files: undefined });
+  };
 
   return (
     <Menu shadow="md" width={375} position="top-end" offset={10} arrowOffset={25} radius="lg" withArrow>
@@ -111,7 +104,14 @@ const ChatBot = () => {
               <PromptInputTextarea onChange={e => setInput(e.target.value)} value={input} />
             </PromptInputBody>
             <PromptInputFooter className="pt-0">
-              <div></div>
+              <button
+                type="button"
+                onClick={sendTodayArticle}
+                disabled={!todayArticle || status === 'streaming'}
+                className="text-xs text-gray-500 hover:text-gray-700 disabled:opacity-50"
+              >
+                今日面试题
+              </button>
               <PromptInputSubmit className="cursor-pointer bg-gray-200 rounded-2xl" disabled={!input && !status} status={status} />
             </PromptInputFooter>
           </PromptInput>

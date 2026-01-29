@@ -5,7 +5,7 @@ import { useWeatherTime } from '@/hooks/useWeatherTime';
 
 const Header: React.FC = () => {
   const weather = useWeatherTime();
-  console.log('weather', weather);
+  // console.log('weather', weather);
   if (!weather) return null; // 或 loading UI
 
   const { city, icon, temp, temperature } = weather;
